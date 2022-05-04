@@ -1,0 +1,129 @@
+*{
+  margin:0px;
+  padding:0px;
+  box-sizing:border-box;
+  body{
+    display: grid;
+    place-items:center;
+    width: 100%;
+    height:100vh;
+    background-color: black;
+    color: #adb5bd;
+    font-family: Sans-serif;
+    input[type="checkbox"]{
+      display: none;
+    }
+  }
+}
+
+// These are the Configuration variables
+//Change these according to display sizes/ to your needs
+
+$width:60px;  
+$height:8px; 
+$margin:10px; 
+$font-size: 18px;
+$animation-time: .6s;
+
+//Template for the css flexbox model
+
+@mixin flex($dir,$jus, $ai){
+  display: flex;
+  flex-direction:$dir;
+  justify-content:$jus;
+  align-items: $ai;
+}
+
+//Styling of the .lines class
+
+.lines{
+  cursor:pointer;
+  z-index:1;
+  [class ^="line-"]{
+    width: $width;
+    height:$height;
+    background-color: #fff;
+    margin: $margin 0;
+    transition:all $animation-time ease;
+  }
+}
+
+//This is the hamburger Menu icon toggle On & Off.
+
+#menu-active:checked ~ label{
+  .line-1{
+    transform: translatey($height+ $margin) rotate(45deg);
+  }
+  .line-2{
+    transform:scale(0);
+  }
+  .line-3{
+    transform: translatey(-($height+$margin)) rotate(-45deg);
+      }
+}
+
+//Styling configuration for the .menu class
+//This is the main container that holds the 3 sections
+//The (.items.first) , label & (.items.last)
+
+.menu{
+  @include flex(row, null, null);
+}
+
+
+
+//Styling rules for the checkbox label
+
+label{
+  @include flex(row,null, null);
+}
+
+//Styling of the .items class(includes both .first & .last classes)
+
+.items{
+  z-index:0;
+  transition: all $animation-time ease;
+  font-size: $font-size;
+  font-weight:600;
+  @include flex(row, center, center);
+  [class ^="i-"]{
+    margin: 0 $margin;
+    cursor:pointer;
+    transition: all .3s ease;
+    &:hover{
+      color:white;
+    }
+  }
+}
+
+
+//Configuring the initial position of .first & .last class[the menu items]
+
+.first{
+  transform: translatex(100px);
+  opacity:0%;
+  pointer-events:none; // removes the cursor: pointer
+
+}
+.last{
+  transform:translatex(-100px);
+  opacity:0%;
+  pointer-events:none; // removes the cursor: pointer
+}
+
+
+// This is the transition of menu items on & Off
+
+#menu-active:checked{
+  & ~ .first{
+    transform: translatex(0px);
+    opacity:100%;
+    pointer-events:auto; // brings back the cursor: pointer
+  }
+  & ~ .last{
+    transform: translatex(0px);
+    opacity:100%;
+    pointer-events:auto; // brings back the cursor: pointer
+  }
+}
+
